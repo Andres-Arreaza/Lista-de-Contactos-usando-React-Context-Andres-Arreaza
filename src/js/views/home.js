@@ -1,15 +1,32 @@
-import React from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { Context } from "../store/appContext";
 import rigoImage from "../../img/rigo-baby.jpg";
 import "../../styles/home.css";
+import Contact from "../component/Contact";
+import { Navbar } from "../component/navbar";
+// import { Navbar } from "../component/navbar";
 
-export const Home = () => (
-	<div className="text-center mt-5">
-		<h1>Hello Rigo!</h1>
-		<p>
-			<img src={rigoImage} />
-		</p>
-		<a href="#" className="btn btn-success">
-			If you see this green button, bootstrap is working
-		</a>
-	</div>
-);
+
+const Home = () => {
+	const { store, actions } = useContext(Context);
+	//id, name, phone, email, address 
+	return (
+		<div className="text-center container-fluid bg-white pb-4" style={{ width: "1024px" }}>
+			<Navbar />
+			{store.contacts == null ? <h1>Cargando contactos...</h1> :
+				store.contacts == false ? <h1>No hay contactos</h1> :
+					store.contacts && store.contacts.length > 0 && store.contacts.map((item) => (
+						<Contact
+							key={item.id}
+							id={item.id}
+							name={item.name}
+							phone={item.phone}
+							email={item.email}
+							address={item.address}
+						/>
+					)
+					)}
+		</div>
+	);
+}
+export default Home;
